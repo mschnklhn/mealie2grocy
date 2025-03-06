@@ -1,6 +1,5 @@
 import unittest
-from unittest.mock import patch, MagicMock
-from flask import Flask
+from unittest.mock import patch
 
 from server import app
 

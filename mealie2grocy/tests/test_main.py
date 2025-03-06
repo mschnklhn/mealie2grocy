@@ -1,11 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 
-from main import test_grocy_connection, test_mealie_connection, update_products_in_mealie, compare_product_databases, \
-    update_grocy_shoppinglist_from_mealie
-from models.grocy import GrocyProductItem
-from models.ingredient import Ingredient
-from models.mealie import MealieFoodItem
+from main import test_grocy_connection, test_mealie_connection, update_products_in_mealie, compare_product_databases
 
 
 class TestServiceFunctions(unittest.TestCase):

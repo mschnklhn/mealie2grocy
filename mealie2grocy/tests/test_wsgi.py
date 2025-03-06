@@ -1,6 +1,4 @@
-import json
 import unittest
-from unittest.mock import patch
 from wsgi import app
 
 class BasicTests(unittest.TestCase):
