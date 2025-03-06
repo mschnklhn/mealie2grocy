@@ -1,0 +1,27 @@
+configuration:
+  GROCY_BASE_URL:
+    name: Grocy Base URL
+    description: The base URL of your Grocy instance. Default value links to internal Grocy instance.
+    default: http://a0d7b954-grocy/api
+    required: true
+  GROCY_API_KEY:
+    name: Grocy API Key
+    description: The API key of your Grocy instance. If you don't have one, you can create one in the Grocy settings.
+    default: null
+    required: true
+  MEALIE_BASE_URL:
+    name: Mealie Base URL
+    description: The base URL of your Mealie instance. Default value links to internal Mealie instance.
+    default: http://db21ed7f-mealie:9000/api
+    required: true
+  MEALIE_API_KEY:
+    name: Mealie API Key
+    description: The API key of your Mealie instance. If you don't have one, you can create one in the Mealie settings.
+    default: null
+    required: true
+  API_KEYS:
+    name: API Keys
+    description: A list of API keys to use for authentication on the WebUI. It is deprecated and will be removed in a future version.
+    default: []
+    required: false
+

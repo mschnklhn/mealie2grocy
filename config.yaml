@@ -1,0 +1,39 @@
+name: Mealie2Grocy
+description: Synchronize Mealie shopping list with Grocy
+version: 0.9.3
+slug: mealie2grocy
+init: false
+url: https://github.com/MariusSchenkluhn/mealie2grocy
+panel_icon: mdi:sync
+panel_admin: false
+arch:
+  - armv7
+  - armhf
+  - aarch64
+  - amd64
+  - i386
+startup: application
+boot: auto
+webui: https://[HOST]:[PORT:9193]
+watchdog: http://[HOST]:[PORT:9193]/health
+homeassistant_api: false
+#ports:
+#  "9193/tcp": 9193
+#ports_description:
+#  "9193/tcp": WebUI & API
+map: []
+ingress: true
+ingress_port: 9193
+options:
+  GROCY_BASE_URL: http://a0d7b954-grocy/api
+  GROCY_API_KEY: null
+  MEALIE_BASE_URL: http://db21ed7f-mealie:9000/api
+  MEALIE_API_KEY: null
+  API_KEYS: []
+schema:
+  GROCY_API_KEY: str
+  GROCY_BASE_URL: str
+  MEALIE_API_KEY: str
+  MEALIE_BASE_URL: str
+  API_KEYS:
+    - str

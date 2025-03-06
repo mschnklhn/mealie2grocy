@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mealie2Grocy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 50vh;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 20px 0;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #status {
+            margin-top: 0px;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Mealie2Grocy</h1>
+    {% if ingress_username() %}
+    <div id="username-display">
+        {{ _("Logged in as") }}: {{ ingress_username() }}
+    </div>
+    {% endif %}
+    <div id="status">{{ _("Testing connection...") }}</div>
+    <!--    <input type="text" id="api_key" placeholder="Enter API Key">-->
+    <button id="syncButton" onclick="sync_shoppinglist()">{{ _("Synchronize shoppinglist") }}</button>
+    <button id="compareButton" onclick="compare_m2g_databases()" style="background-color: #999">
+        {{ _("Compare products") }}
+    </button>
+    <div id="response"
+         style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 10px; margin-top: 20px; border-radius: 4px; font-family: monospace; white-space: pre-line; overflow-x: auto; text-align: left;"></div>
+</div>
+<script>
+    function checkHealth() {
+        fetch('{{ ingress_url_for("health_check") }}')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').textContent = data.status === 'alive' ? "{{ _('Connected to Mealie and Grocy.') }}" : "{{ _('Could not establish connection.') }}";
+                document.getElementById('status').style.color = data.status === 'alive' ? 'green' : 'red';
+            })
+            .catch(error => {
+                console.error('Error fetching health status:', error);
+                document.getElementById('status').textContent = "{{ _('Could not establish connection.') }}";
+            });
+    }
+
+    function sync_shoppinglist() {
+        const button = document.getElementById("syncButton");
+        const originalText = button.innerHTML;
+
+        // Show loading animation
+        button.innerHTML = "🔄 {{ _('Synchronizing') }}...";
+        button.disabled = true; // Prevent multiple clicks
+
+        callEndpoint("{{ ingress_url_for('update_grocy_shoppinglist') }}").finally(() => {
+            // Reset button state
+            button.innerHTML = originalText;
+            button.disabled = false;
+        });
+    }
+
+    function compare_m2g_databases() {
+        const button = document.getElementById("compareButton");
+        const originalText = button.innerHTML;
+
+        // Show loading animation
+        button.innerHTML = "🔄 {{ _('Comparing') }}...";
+        button.disabled = true; // Prevent multiple clicks
+
+        callEndpoint("{{ ingress_url_for('compare_m2g_databases') }}").finally(() => {
+            // Reset button state
+            button.innerHTML = originalText;
+            button.disabled = false;
+        });
+    }
+
+    function callEndpoint(endpoint) {
+        document.getElementById('response').textContent = '...';
+
+        return new Promise((resolve, reject) => {
+            // const apiKey = "Bearer " + document.getElementById('api_key').value;
+
+            fetch(`${endpoint}`, {
+                // headers: {
+                //     'Authorization': apiKey
+                // }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const responseDiv = document.getElementById('response');
+                    if (data === null || data.message === null) {
+                        responseDiv.textContent = `Error @ ${endpoint}.`;
+                        reject(`Error @ ${endpoint}.`);
+                    } else if (data.result === null || data.result === undefined) {
+                        responseDiv.textContent = `${data.message}`;
+                        resolve(data.message);
+                    } else {
+                        responseDiv.textContent = `${data.message}:\n\n${data.result}`;
+                        resolve(data.result);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error calling endpoint:', error);
+                    reject(error);
+                });
+        });
+    }
+
+
+    // Check health status on page load
+    document.addEventListener('DOMContentLoaded', checkHealth);
+</script>
+</body>
+</html>

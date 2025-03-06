@@ -1,0 +1,27 @@
+configuration:
+  GROCY_BASE_URL:
+    name: Grocy Basis URL
+    description: Die Basis-URL deiner Grocy-Instanz. Der Standardwert verweist auf die interne Grocy-Instanz.
+    default: http://a0d7b954-grocy/api
+    required: true
+  GROCY_API_KEY:
+    name: Grocy API Key
+    description: Der API-Schlüssel deiner Grocy-Instanz. Wenn du keinen hast, kannst du einen in den Grocy-Einstellungen erstellen.
+    default: null
+    required: true
+  MEALIE_BASE_URL:
+    name: Mealie Base URL
+    description: Die Basis-URL deiner Mealie-Instanz. Der Standardwert verweist auf die interne Mealie-Instanz.
+    default: http://db21ed7f-mealie:9000/api
+    required: true
+  MEALIE_API_KEY:
+    name: Mealie API Key
+    description: Der API-Schlüssel deiner Mealie-Instanz. Wenn du keinen hast, kannst du einen in den Mealie-Einstellungen erstellen.
+    default: null
+    required: true
+  API_KEYS:
+    name: API Keys
+    description: Eine Liste von API-Schlüsseln, die für die Authentifizierung auf der WebUI verwendet werden sollen. Es ist veraltet und wird in einer zukünftigen Version entfernt.
+    default: []
+    required: false
+
