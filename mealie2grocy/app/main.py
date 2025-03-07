@@ -42,7 +42,7 @@ def update_grocy_shoppinglist_from_mealie():
     # 2. Match ingredients with grocy products
     for ingredient in ingredients:
         for product in grocy_products:
-            if ingredient.name in product.name:
+            if ingredient.name == product.name:
                 ingredient.gid = product.id
                 break
 
@@ -66,6 +66,8 @@ def update_grocy_shoppinglist_from_mealie():
         if stock_item.stock_unit != ingredient.unit:
             logging.info(f"Converting {ingredient.unit} to {stock_item.stock_unit}")
             converted_ingredients.append(converter.convert(ingredient, stock_item))
+        else:
+            converted_ingredients.append(ingredient)
 
     # Aggregate ingredients
     to_remove = []
@@ -104,7 +106,8 @@ def update_grocy_shoppinglist_from_mealie():
         else:
             logging.info(f"Stock is sufficient for {ingredient.name} (required: {ingredient.amount}, stock: {stock_item.stock}, min stock: {stock_item.min_stock}, already on shopping list: {amount_already_on_shoppinglist})")
             result += f"{ingredient.name} {_("is in stock or already on the list")} ({stock_item.stock} {stock_item.stock_unit})\n"
-    mealie.clear_shoppinglist()
+
+    # mealie.clear_shoppinglist()
 
     if result == "":
         result = _("Shopping list is up to date.")
@@ -118,8 +121,6 @@ def compare_product_databases():
 
     result = ""
     for product in grocy_products:
-        print(product)
-        print(product.name)
         if product.name not in [food.name for food in mealie_foods]:
             result += f"{product.name} {_("missing in")} Mealie.\n"
 
