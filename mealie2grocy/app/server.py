@@ -18,7 +18,7 @@ app = Flask(__name__)
 # Tranlations
 app.config['BABEL_DEFAULT_LOCALE'] = 'en'
 app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'de']
-app.config['BABEL_TRANSLATION_DIRECTORIES'] = 'translations'
+app.config['BABEL_TRANSLATION_DIRECTORIES'] = './translations'
 
 
 def get_locale():

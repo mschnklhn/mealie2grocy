@@ -14,7 +14,11 @@ ENV PATH="/app/venv/bin:$PATH"
 
 COPY app /app
 
+# Install requirements
 RUN pip --no-cache-dir install -r /app/requirements.txt
+
+# Compile translations
+RUN pybabel compile -d /app/translations
 
 # Copy data for add-on
 COPY run.sh /
