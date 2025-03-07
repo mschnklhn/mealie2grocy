@@ -78,6 +78,9 @@
     <button id="compareButton" onclick="compare_m2g_databases()" style="background-color: #999">
         {{ _("Compare products") }}
     </button>
+    <button id="clearShoppinglistButton" onclick="clear_shoppinglist()" style="background-color: #999">
+        {{ _("Clear mealie shoppinglist") }}
+    </button>
     <div id="response"
          style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 10px; margin-top: 20px; border-radius: 4px; font-family: monospace; white-space: pre-line; overflow-x: auto; text-align: left;"></div>
 </div>
@@ -119,6 +122,21 @@
         button.disabled = true; // Prevent multiple clicks
 
         callEndpoint("{{ ingress_url_for('compare_m2g_databases') }}").finally(() => {
+            // Reset button state
+            button.innerHTML = originalText;
+            button.disabled = false;
+        });
+    }
+
+    function clear_shoppinglist() {
+        const button = document.getElementById("clearShoppinglistButton");
+        const originalText = button.innerHTML;
+
+        // Show loading animation
+        button.innerHTML = "🔄 {{ _('Clearing') }}...";
+        button.disabled = true; // Prevent multiple clicks
+
+        callEndpoint("{{ ingress_url_for('clear_mealie_shoppinglist_endpoint') }}").finally(() => {
             // Reset button state
             button.innerHTML = originalText;
             button.disabled = false;

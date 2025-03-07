@@ -138,10 +138,10 @@ class MealieInstance:
         url = f"{self.endpoint}/households/shopping/items"
         response = requests.delete(url, headers=self.default_headers, params={"ids": item_ids})
 
-        if response.status_code != 200:
-            raise Exception(f"Failed to clear shopping list from mealie: {response.text}")
-
-        logging.info("Cleared mealie shopping list")
+        if response.status_code == 200:
+            return True
+        else:
+            return False
 
     def test_connection(self):
         url = f"{self.endpoint}/app/about"

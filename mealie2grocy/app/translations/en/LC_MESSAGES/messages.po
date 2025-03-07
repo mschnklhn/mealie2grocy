@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-06 10:24+0100\n"
+"POT-Creation-Date: 2025-03-07 18:32+0100\n"
 "PO-Revision-Date: 2025-03-06 10:18+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: main.py:97
+#: main.py:99
 msgid "is added to the shopping list."
 msgstr "is added to the shopping list."
 
-#: main.py:106
+#: main.py:108
 msgid "is in stock or already on the list"
 msgstr "is in stock or already on the list"
 
-#: main.py:110
+#: main.py:113
 msgid "Shopping list is up to date."
 msgstr "Shopping list is up to date."
 
-#: main.py:122 main.py:126
+#: main.py:129 main.py:133
 msgid "missing in"
 msgstr "missing in"
 
-#: main.py:129
+#: main.py:136
 msgid "Product databases are identical."
 msgstr "Product databases are identical."
 
@@ -46,7 +46,16 @@ msgstr "Mealie shopping list transfered to Grocy"
 msgid "Compare Productdatabases"
 msgstr "Compare Productdatabases"
 
-#: server.py:119
+#: server.py:71
+msgid "Mealie shopping list cleared"
+msgstr "Mealie shopping list cleared"
+
+#: server.py:73
+#, fuzzy
+msgid "Failed to clear mealie shopping list"
+msgstr "is added to the shopping list."
+
+#: server.py:133
 msgid "Not logged in."
 msgstr "Not logged in."
 
@@ -54,35 +63,45 @@ msgstr "Not logged in."
 msgid "Grocy does not respond. Please try again."
 msgstr "Grocy does not respond. Please try again."
 
-#: templates/index.html:67
+#: templates/index.html:72
 msgid "Logged in as"
 msgstr "Logged in as"
 
-#: templates/index.html:70
+#: templates/index.html:75
 msgid "Testing connection..."
 msgstr "Testing connection..."
 
-#: templates/index.html:72
+#: templates/index.html:77
 msgid "Synchronize shoppinglist"
 msgstr "Synchronize shoppinglist"
 
-#: templates/index.html:74
+#: templates/index.html:79
 msgid "Compare products"
 msgstr "Compare products"
 
-#: templates/index.html:84
+#: templates/index.html:82
+#, fuzzy
+msgid "Clear mealie shoppinglist"
+msgstr "Mealie shopping list cleared"
+
+#: templates/index.html:92
 msgid "Connected to Mealie and Grocy."
 msgstr "Connected to Mealie and Grocy."
 
-#: templates/index.html:84 templates/index.html:89
+#: templates/index.html:92 templates/index.html:97
 msgid "Could not establish connection."
 msgstr "Could not establish connection."
 
-#: templates/index.html:98
+#: templates/index.html:106
 msgid "Synchronizing"
 msgstr "Synchronizing"
 
-#: templates/index.html:113
+#: templates/index.html:121
 msgid "Comparing"
+msgstr "Comparing"
+
+#: templates/index.html:136
+#, fuzzy
+msgid "Clearing"
 msgstr "Comparing"
 

@@ -8,7 +8,7 @@ from flask_babel import Babel, _
 
 from config import LOG_LEVEL, API_KEYS, API_PORT
 from main import update_products_in_mealie, update_grocy_shoppinglist_from_mealie, compare_product_databases, \
-    test_grocy_connection, test_mealie_connection
+    test_grocy_connection, test_mealie_connection, clear_mealie_shoppinglist
 
 logging.basicConfig(level=LOG_LEVEL, format='%(asctime)s - %(levelname)-8s - %(name)-10s - %(message)s')
 
@@ -57,6 +57,20 @@ def compare_m2g_databases():
 
     result = compare_product_databases()
     return jsonify({"success": True, "message": _("Compare Productdatabases"), "result": result})
+
+
+@app.route('/clear-mealie-shoppinglist', methods=['GET'])
+def clear_mealie_shoppinglist_endpoint():
+    if not check_auth(request):
+        return response_unauthorized()
+
+    result = clear_mealie_shoppinglist()
+
+    if result:
+        logging.info("Cleared mealie shopping list")
+        return jsonify({"success": True, "message": _("Mealie shopping list cleared")})
+    else:
+        return jsonify({"success": False, "message": _("Failed to clear mealie shopping list")})
 
 
 @app.route('/health', methods=['GET'])

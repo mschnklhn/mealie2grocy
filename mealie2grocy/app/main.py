@@ -90,9 +90,9 @@ def update_grocy_shoppinglist_from_mealie():
 
         if ingredient.amount > 0:
             amount_needed = round(max(ingredient.amount - stock_item.stock + stock_item.min_stock - amount_already_on_shoppinglist, 0), 2)
-        else:
+        elif stock_item.stock == 0:
             # Any amount is sufficient
-            amount_needed = round(max(1 - stock_item.stock - amount_already_on_shoppinglist, 0), 2)
+            amount_needed = round(max(1 - amount_already_on_shoppinglist, 0), 2)
 
         if amount_needed > 0.05:
             logging.info(f"Adding {amount_needed} {ingredient.name} to shopping list (required: {ingredient.amount}, stock: {stock_item.stock}, min stock: {stock_item.min_stock}, already on shopping list: {amount_already_on_shoppinglist})")
@@ -113,6 +113,10 @@ def update_grocy_shoppinglist_from_mealie():
         result = _("Shopping list is up to date.")
 
     return result
+
+
+def clear_mealie_shoppinglist():
+    return mealie.clear_shoppinglist()
 
 
 def compare_product_databases():
