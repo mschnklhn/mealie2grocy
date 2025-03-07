@@ -64,6 +64,8 @@ def health_check():
     grocy_connection = False
     mealie_connection = False
 
+    logging.info(request.headers.get('Accept-Language'))
+
     retries = 3
     while not grocy_connection and retries > 0:
         # Grocy sometimes fails to respond correctly, so we retry a few times
