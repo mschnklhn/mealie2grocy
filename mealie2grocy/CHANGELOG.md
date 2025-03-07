@@ -1,3 +1,7 @@
+## v0.9.5 (2025-03-07)
+- Improvements to WebUI
+- Bugfixes
+
 ## v0.9.3 (2025-03-06)
 - Add translations
 - Add German translation

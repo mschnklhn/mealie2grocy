@@ -225,6 +225,10 @@ class GrocyInstance:
 
         current_notes = json.loads(response.text)["description"]
 
+        if note in current_notes:
+            # Do not add note if it already exists
+            return
+
         body = {
             "description": f"{current_notes}<p>{note}</p>"
         }

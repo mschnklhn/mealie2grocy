@@ -88,6 +88,7 @@ def update_grocy_shoppinglist_from_mealie():
         on_shoppinglist = ingredients_already_on_shopping_list.get(ingredient.gid)
         amount_already_on_shoppinglist = on_shoppinglist.amount if on_shoppinglist else 0
 
+        amount_needed = 0
         if ingredient.amount > 0:
             amount_needed = round(max(ingredient.amount - stock_item.stock + stock_item.min_stock - amount_already_on_shoppinglist, 0), 2)
         elif stock_item.stock == 0:
