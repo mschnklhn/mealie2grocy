@@ -1,9 +1,9 @@
 name: Mealie2Grocy
 description: Synchronize Mealie shopping list with Grocy
-version: 0.9.3
+version: 0.9.4
 slug: mealie2grocy
 init: false
-url: https://github.com/MariusSchenkluhn/mealie2grocy
+url: https://github.com/mschnklhn/mealie2grocy
 panel_icon: mdi:sync
 panel_admin: false
 arch:
