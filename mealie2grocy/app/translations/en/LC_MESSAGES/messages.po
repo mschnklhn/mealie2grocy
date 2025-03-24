@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-07 18:32+0100\n"
+"POT-Creation-Date: 2025-03-24 10:43+0100\n"
 "PO-Revision-Date: 2025-03-06 10:18+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,44 +18,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: main.py:99
+#: main.py:100
 msgid "is added to the shopping list."
 msgstr "is added to the shopping list."
 
-#: main.py:108
+#: main.py:109
 msgid "is in stock or already on the list"
 msgstr "is in stock or already on the list"
 
-#: main.py:113
+#: main.py:114
 msgid "Shopping list is up to date."
 msgstr "Shopping list is up to date."
 
-#: main.py:129 main.py:133
+#: main.py:130 main.py:134
 msgid "missing in"
 msgstr "missing in"
 
-#: main.py:136
+#: main.py:137
 msgid "Product databases are identical."
 msgstr "Product databases are identical."
 
-#: server.py:50
+#: server.py:48
+msgid "Process currently running. Please wait..."
+msgstr "Process currently running. Please wait..."
+
+#: server.py:55
 msgid "Mealie shopping list transfered to Grocy"
 msgstr "Mealie shopping list transfered to Grocy"
 
-#: server.py:59
+#: server.py:64
 msgid "Compare Productdatabases"
 msgstr "Compare Productdatabases"
 
-#: server.py:71
+#: server.py:76
 msgid "Mealie shopping list cleared"
 msgstr "Mealie shopping list cleared"
 
-#: server.py:73
+#: server.py:78
 #, fuzzy
 msgid "Failed to clear mealie shopping list"
 msgstr "is added to the shopping list."
 
-#: server.py:133
+#: server.py:138
 msgid "Not logged in."
 msgstr "Not logged in."
 

@@ -1,3 +1,6 @@
+## v0.9.6 (2025-03-24)
+- Fix bug where non-food items on a recipe could not be interpreted correctly
+
 ## v0.9.5 (2025-03-07)
 - Improvements to WebUI
 - Bugfixes

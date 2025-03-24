@@ -20,6 +20,7 @@ app.config['BABEL_DEFAULT_LOCALE'] = 'en'
 app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'de']
 app.config['BABEL_TRANSLATION_DIRECTORIES'] = './translations'
 
+lock_shoppinglist_update = False
 
 def get_locale():
     return request.accept_languages.best_match(app.config['BABEL_SUPPORTED_LOCALES'])
@@ -39,14 +40,20 @@ def update_mealie_products():
 
 @app.route('/update-grocy-shoppinglist', methods=['GET'])
 def update_grocy_shoppinglist():
+    global lock_shoppinglist_update
     if not check_auth(request):
         return response_unauthorized()
+
+    if lock_shoppinglist_update:
+        return jsonify({"success": False, "message": _("Process currently running. Please wait...")})
 
     # Call method async
     # thread = threading.Thread(target=update_grocy_shoppinglist_from_mealie)
     # thread.start()
 
+    lock_shoppinglist_update = True
     result = update_grocy_shoppinglist_from_mealie()
+    lock_shoppinglist_update = False
     return jsonify({"success": True, "message": _("Mealie shopping list transfered to Grocy"), "result": result})
 
 

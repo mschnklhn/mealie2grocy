@@ -92,9 +92,16 @@ class MealieInstance:
             if food_item["checked"] is True:
                 continue
 
+            # Handle notes that are not in the food DB
+            food_name = food_item["food"]["name"] if food_item["food"] else None
+            if not food_name:
+                if not food_item["note"]:
+                    continue
+                food_name = food_item["note"]
+
             unit = food_item["unit"]["name"] if food_item["unit"] is not None else None
 
-            ingredient = Ingredient(food_item["food"]["name"], food_item["quantity"], unit, note=food_item["note"], mid=food_item["id"])
+            ingredient = Ingredient(food_name, food_item["quantity"], unit, note=food_item["note"], mid=food_item["id"])
 
             ingredients.append(ingredient)
 
