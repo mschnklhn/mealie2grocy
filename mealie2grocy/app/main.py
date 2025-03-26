@@ -85,7 +85,7 @@ def update_grocy_shoppinglist_from_mealie():
                 ingredient1.add(ingredient2)
                 to_remove.append(j)
 
-    for i in reversed(to_remove):
+    for i in sorted(to_remove, reverse=True):
         converted_ingredients.pop(i)
 
     for ingredient in converted_ingredients:
