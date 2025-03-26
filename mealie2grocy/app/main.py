@@ -50,9 +50,9 @@ def update_grocy_shoppinglist_from_mealie():
             logging.warning(f"Could not find product for ingredient: {ingredient.name}")
             note = ingredient.name
             if ingredient.amount > 0:
-                note += ": " + ingredient.amount
+                note += ": " + str(ingredient.amount)
                 if ingredient.unit:
-                    note += " " + ingredient.unit
+                    note += " " + str(ingredient.unit)
 
             grocy.add_note_to_shopping_list(note)
 

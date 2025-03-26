@@ -1,3 +1,6 @@
+## v0.9.7 (2025-03-26)
+- Fix bug that prevented adding a note in Grocy
+
 ## v0.9.6 (2025-03-24)
 - Fix bug where non-food items on a recipe could not be interpreted correctly
 
