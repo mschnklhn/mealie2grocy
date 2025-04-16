@@ -223,11 +223,16 @@ class GrocyInstance:
         if response.status_code != 200:
             raise Exception(f"Failed to read shopping list notes: {response.text}")
 
-        current_notes = json.loads(response.text)["description"]
+        payload = json.loads(response.text)
 
-        if note in current_notes:
-            # Do not add note if it already exists
-            return
+        current_notes = ""
+
+        if "description" in payload:
+            current_notes = payload["description"]
+
+            if note in current_notes:
+                # Do not add note if it already exists
+                return
 
         body = {
             "description": f"{current_notes}<p>{note}</p>"

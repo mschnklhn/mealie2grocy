@@ -69,6 +69,10 @@ def update_grocy_shoppinglist_from_mealie():
         # 5.0. Convert mealie units to grocy units if needed
         stock_item = grocy.get_stock_product(ingredient.gid)
         stock_items[ingredient.gid] = stock_item
+
+        # Ignore opened items
+        stock_item.stock -= stock_item.stock_opened
+
         if stock_item.stock_unit != ingredient.unit:
             logging.info(f"Converting {ingredient.unit} to {stock_item.stock_unit}")
             converted_ingredients.append(converter.convert(ingredient, stock_item))

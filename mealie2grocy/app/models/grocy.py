@@ -22,10 +22,11 @@ class GrocyProductItem:
 
 
 class GrocyStockItem:
-    def __init__(self, gid, name, stock, min_stock, stock_unit_id, stock_unit):
+    def __init__(self, gid, name, stock, stock_opened, min_stock, stock_unit_id, stock_unit):
         self.id = gid
         self.name = name
         self.stock = stock
+        self.stock_opened = stock_opened
         self.min_stock = min_stock
         self.stock_unit_id = stock_unit_id
         self.stock_unit = stock_unit
@@ -35,7 +36,7 @@ class GrocyStockItem:
 
     @classmethod
     def from_json(cls, data):
-        return cls(data["product"]["id"], data["product"]["name"], data["stock_amount_aggregated"], data["product"]["min_stock_amount"], data["product"]["qu_id_stock"], data["quantity_unit_stock"]["name"])
+        return cls(data["product"]["id"], data["product"]["name"], data["stock_amount_aggregated"], data["stock_amount_opened"], data["product"]["min_stock_amount"], data["product"]["qu_id_stock"], data["quantity_unit_stock"]["name"])
 
 
 class GrocyUnit:

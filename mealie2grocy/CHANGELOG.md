@@ -1,3 +1,7 @@
+## v0.9.8 (2025-04-16)
+- Do not count opened products as in stock
+- Fix bug when list of notes was empty
+
 ## v0.9.7 (2025-03-26)
 - Fix bug that prevented adding a note in Grocy
 
