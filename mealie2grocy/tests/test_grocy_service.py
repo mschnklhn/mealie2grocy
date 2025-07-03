@@ -40,18 +40,20 @@ class TestGrocyStockItem(unittest.TestCase):
                 'qu_id_stock': 1
             },
             'stock_amount_aggregated': 100,
+            'stock_amount_opened': 20,
             'quantity_unit_stock': {'name': 'kg'}
         }
         stock_item = GrocyStockItem.from_json(data)
         self.assertEqual(stock_item.id, 1)
         self.assertEqual(stock_item.name, 'Flour')
         self.assertEqual(stock_item.stock, 100)
+        self.assertEqual(stock_item.stock_opened, 20)
         self.assertEqual(stock_item.min_stock, 1)
         self.assertEqual(stock_item.stock_unit_id, 1)
         self.assertEqual(stock_item.stock_unit, 'kg')
 
     def test_str_representation(self):
-        stock_item = GrocyStockItem(1, 'Sugar', 50, 5, 2, 'kg')
+        stock_item = GrocyStockItem(1, 'Sugar', 50, 20, 5, 2, 'kg')
         self.assertEqual(str(stock_item), '50')
 
 class TestGrocyUnit(unittest.TestCase):

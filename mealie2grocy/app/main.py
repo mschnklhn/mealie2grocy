@@ -48,13 +48,13 @@ def update_grocy_shoppinglist_from_mealie():
 
         if ingredient.gid is None:
             logging.warning(f"Could not find product for ingredient: {ingredient.name}")
-            note = ingredient.name
-            if ingredient.amount > 0:
-                note += ": " + str(ingredient.amount)
-                if ingredient.unit:
-                    note += " " + str(ingredient.unit)
+            ingredient_name = ingredient.name
+            if not ingredient.amount > 0:
+                ingredient.amount = 0
+            if ingredient.unit:
+                ingredient_name += f" ({ingredient.unit})"
 
-            grocy.add_note_to_shopping_list(note)
+            grocy.add_product_note_to_shopping_list(ingredient_name, ingredient.amount)
 
     # 4. Get existing grocy shopping list
     ingredients_already_on_shopping_list = grocy.get_shopping_list_ingredients()

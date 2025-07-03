@@ -1,3 +1,8 @@
+## v0.9.9 (2025-07-03)
+- Fix: Notes on shoppinglist are treated like a product causing crash
+- Add products that only exist in Mealie as Grocy shoppinglist note
+- Fix: Empty notes on the shoppinglist can cause a crash
+
 ## v0.9.8 (2025-04-16)
 - Do not count opened products as in stock
 - Fix bug when list of notes was empty

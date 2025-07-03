@@ -50,7 +50,7 @@ class TestUnitConverter(unittest.TestCase):
 
     def test_convert_any_amount_unit(self):
         ingredient = Ingredient("Flour", 0, "Prise", None)
-        stock_item = GrocyStockItem(1, "Flour", "g", 100, 5, 'g')
+        stock_item = GrocyStockItem(1, "Flour", "g", 5, 100, 5, 'g')
 
         converted_ingredient = self.unit_converter.convert(ingredient, stock_item)
         self.assertEqual(converted_ingredient.amount, 0)
@@ -58,7 +58,7 @@ class TestUnitConverter(unittest.TestCase):
 
     def test_convert_one_piece_unit(self):
         ingredient = Ingredient("Garlic", 1, "Kopf", None)
-        stock_item = GrocyStockItem(1, "Garlic", "g", 100, 5, 'g')
+        stock_item = GrocyStockItem(1, "Garlic", "g", 5, 100, 5, 'g')
 
         converted_ingredient = self.unit_converter.convert(ingredient, stock_item)
         self.assertEqual(converted_ingredient.amount, 1)
@@ -66,7 +66,7 @@ class TestUnitConverter(unittest.TestCase):
 
     def test_convert_with_direct_conversion(self):
         ingredient = Ingredient("Sugar", 1000, "g", None)
-        stock_item = GrocyStockItem(2, "Sugar", "kg", 1, 5, 'kg')
+        stock_item = GrocyStockItem(2, "Sugar", "kg", 1, 1, 5, 'kg')
 
         converted_ingredient = self.unit_converter.convert(ingredient, stock_item)
         self.assertEqual(converted_ingredient.amount, 1)
@@ -74,7 +74,7 @@ class TestUnitConverter(unittest.TestCase):
 
     def test_convert_with_custom_stock_conversion(self):
         ingredient = Ingredient("Salt", 1000, "g", None)
-        stock_item = GrocyStockItem(3, "Salt", "kg", 1, 5, 'kg')
+        stock_item = GrocyStockItem(3, "Salt", "kg", 1, 1, 5, 'kg')
 
         self.mock_grocy.get_unit_conversion_resolved.return_value = {
             ('g', 'kg'): 0.001
@@ -86,7 +86,7 @@ class TestUnitConverter(unittest.TestCase):
 
     def test_conversion_error(self):
         ingredient = Ingredient("Pepper", 500, "g", None)
-        stock_item = GrocyStockItem(4, "Pepper", "g", 1, 5, 'g')
+        stock_item = GrocyStockItem(4, "Pepper", "g", 1,1, 5, 'g')
 
         with self.assertLogs(level='ERROR') as log:
             converted_ingredient = self.unit_converter.convert(ingredient, stock_item)

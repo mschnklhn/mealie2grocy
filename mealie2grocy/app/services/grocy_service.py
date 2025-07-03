@@ -110,6 +110,10 @@ class GrocyInstance:
             if item["done"] == 1:
                 continue
 
+            if not item["product_id"]:
+                # Item is only a note
+                continue
+
             product_item = self.get_product(item["product_id"])
             unit = self.get_unit(item["qu_id"])
             gid = item["product_id"]
@@ -117,7 +121,9 @@ class GrocyInstance:
             if gid in ingredients:
                 ingredients[gid].amount += item["amount"]
             else:
-                ingredients[gid] = Ingredient(product_item.name, item["amount"], unit, gid=gid)
+                ingredients[gid] = Ingredient(
+                    product_item.name, item["amount"], unit, gid=gid
+                )
 
         return ingredients
 
@@ -160,7 +166,9 @@ class GrocyInstance:
 
         return conversions
 
-    def get_unit_conversion_resolved(self, product_id: int) -> dict[Tuple[str, str], float]:
+    def get_unit_conversion_resolved(
+        self, product_id: int
+    ) -> dict[Tuple[str, str], float]:
         url = f"{self.endpoint}/objects/quantity_unit_conversions_resolved?query%5B%5D=product_id%3D{product_id}"
 
         response = requests.get(url, headers=self.default_get_headers)
@@ -181,39 +189,59 @@ class GrocyInstance:
     def add_to_shopping_list(self, ingredient: 'Ingredient', amount: float):
         url = f"{self.endpoint}/objects/shopping_list"
 
-        data = {
-            "product_id": ingredient.gid,
-            "amount": amount,
-            "note": ingredient.note
-        }
+        data = {"product_id": ingredient.gid, "amount": amount, "note": ingredient.note}
 
-        response = requests.request("POST", url, headers=self.default_post_headers, data=json.dumps(data))
+        response = requests.request(
+            "POST", url, headers=self.default_post_headers, data=json.dumps(data)
+        )
 
         if response.status_code != 200:
             raise Exception(f"Failed to add item to shopping list: {response.text}")
 
     def remove_from_shopping_list(self, gid):
         url = f"{self.endpoint}/stock/shoppinglist/remove-product"
-        body = {
-            "product_id": gid
-        }
+        body = {"product_id": gid}
 
-        response = requests.post(url, headers=self.default_post_headers, data=json.dumps(body))
+        response = requests.post(
+            url, headers=self.default_post_headers, data=json.dumps(body)
+        )
 
         if response.status_code != 204:
-            raise Exception(f"Failed to remove item from shopping list: {response.text}")
+            raise Exception(
+                f"Failed to remove item from shopping list: {response.text}"
+            )
 
     def clear_checked_items_on_shopping_list(self):
         url = f"{self.endpoint}/stock/shoppinglist/clear"
 
-        body = {
-            "done_only": True
-        }
+        body = {"done_only": True}
 
-        response = requests.post(url, headers=self.default_post_headers, data=json.dumps(body))
+        response = requests.post(
+            url, headers=self.default_post_headers, data=json.dumps(body)
+        )
 
         if response.status_code != 204:
-            raise Exception(f"Failed to clear checked items from shopping list: {response.text}")
+            raise Exception(
+                f"Failed to clear checked items from shopping list: {response.text}"
+            )
+
+    def add_product_note_to_shopping_list(self, product_name: str, amount: int):
+        url = f"{self.endpoint}/objects/shopping_list"
+
+        body = {
+            "shopping_list_id": "1",
+            "product_id": "",
+            "qu_id": "",
+            "amount": str(amount),
+            "note": product_name,
+        }
+
+        response = requests.post(
+            url, headers=self.default_post_headers, data=json.dumps(body)
+        )
+
+        if response.status_code != 200:
+            raise Exception(f"Failed to add note to shopping list: {response.text}")
 
     def add_note_to_shopping_list(self, note: str):
         url = f"{self.endpoint}/objects/shopping_lists/1"
@@ -234,11 +262,11 @@ class GrocyInstance:
                 # Do not add note if it already exists
                 return
 
-        body = {
-            "description": f"{current_notes}<p>{note}</p>"
-        }
+        body = {"description": f"{current_notes}<p>{note}</p>"}
 
-        response = requests.put(url, headers=self.default_post_headers, data=json.dumps(body))
+        response = requests.put(
+            url, headers=self.default_post_headers, data=json.dumps(body)
+        )
 
         if response.status_code != 204:
             raise Exception(f"Failed to add note to shopping list: {response.text}")
