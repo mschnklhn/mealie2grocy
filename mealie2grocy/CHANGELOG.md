@@ -1,4 +1,4 @@
-## v0.9.10 (2026-05-20)
+## v0.9.11 (2026-05-20)
 - Upgrade User Interface
 - Group products by status for improved visibility
 
