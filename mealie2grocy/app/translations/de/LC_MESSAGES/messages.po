@@ -106,3 +106,63 @@ msgstr "Vergleiche"
 msgid "Clearing"
 msgstr "Leeren"
 
+#: templates/index.html
+msgid "Sync your Mealie shopping list with Grocy"
+msgstr "Synchronisiere deine Mealie-Einkaufsliste mit Grocy"
+
+#: templates/index.html
+msgid "Results"
+msgstr "Ergebnisse"
+
+#: templates/index.html
+msgid "Run an action above to see what changed in Mealie and Grocy."
+msgstr "Führe oben eine Aktion aus, um zu sehen, was sich in Mealie und Grocy geändert hat."
+
+#: templates/index.html
+msgid "Working..."
+msgstr "Wird ausgeführt..."
+
+#: templates/index.html
+msgid "Added to Grocy shopping list"
+msgstr "Zur Grocy-Einkaufsliste hinzugefügt"
+
+#: templates/index.html
+msgid "Already covered"
+msgstr "Bereits abgedeckt"
+
+#: templates/index.html
+msgid "Missing in Mealie"
+msgstr "Fehlt in Mealie"
+
+#: templates/index.html
+msgid "Missing in Grocy"
+msgstr "Fehlt in Grocy"
+
+#: templates/index.html
+msgid "Synchronizing..."
+msgstr "Synchronisiere..."
+
+#: templates/index.html
+msgid "Comparing..."
+msgstr "Vergleiche..."
+
+#: templates/index.html
+msgid "Clearing..."
+msgstr "Leere..."
+
+#: templates/index.html
+msgid "Connected to Mealie and Grocy"
+msgstr "Verbunden mit Mealie und Grocy"
+
+#: templates/index.html
+msgid "Could not establish connection"
+msgstr "Keine Verbindung möglich"
+
+#: templates/index.html
+msgid "items"
+msgstr "Einträge"
+
+#: templates/index.html
+msgid "Something went wrong"
+msgstr "Etwas ist schiefgelaufen"
+

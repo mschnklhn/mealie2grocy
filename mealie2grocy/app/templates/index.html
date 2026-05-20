@@ -5,178 +5,761 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mealie2Grocy</title>
     <style>
+        :root {
+            --bg: #eef1f6;
+            --surface: #ffffff;
+            --surface-muted: #f7f8fb;
+            --border: #e2e6ef;
+            --text: #1a1d26;
+            --text-muted: #5c6478;
+            --primary: #03a9f4;
+            --primary-hover: #0288d1;
+            --primary-soft: #e1f5fe;
+            --success: #2e7d32;
+            --success-soft: #e8f5e9;
+            --warning: #ed6c02;
+            --warning-soft: #fff3e0;
+            --danger: #c62828;
+            --danger-soft: #ffebee;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 24px rgba(26, 29, 38, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 24px 16px 40px;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            margin: 0 0 6px;
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .card-section {
+            padding: 20px;
+        }
+
+        .card-section + .card-section {
+            border-top: 1px solid var(--border);
+        }
+
+        .connection {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--surface-muted);
+            border-radius: var(--radius-sm);
+        }
+
+        .connection-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            background: #bdbdbd;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        .connection.connected .connection-dot {
+            background: var(--success);
+            box-shadow: 0 0 0 3px var(--success-soft);
+        }
+
+        .connection.disconnected .connection-dot {
+            background: var(--danger);
+            box-shadow: 0 0 0 3px var(--danger-soft);
+        }
+
+        .connection.checking .connection-dot {
+            background: var(--warning);
+            animation: pulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .connection-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s, opacity 0.15s;
+        }
+
+        .btn:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: var(--primary);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            color: var(--text);
+            background: var(--surface-muted);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--border);
+        }
+
+        .actions-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .output-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .output-header h2 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .output-header .hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .output-panel {
+            min-height: 160px;
+            border-radius: var(--radius-sm);
+            background: var(--surface-muted);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .output-empty {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 50vh;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 600px;
+            gap: 10px;
+            min-height: 160px;
+            padding: 24px;
             text-align: center;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            color: var(--text-muted);
         }
 
-        input[type="text"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin: 20px 0;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .output-empty svg {
+            opacity: 0.35;
         }
 
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 5px;
+        .output-empty p {
+            margin: 0;
+            font-size: 0.9rem;
+            max-width: 260px;
         }
 
-        button:hover {
-            background-color: #0056b3;
-        }
-
-        #status {
-            margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 18px;
-        }
-
-        #response:empty {
+        .output-loading {
             display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            min-height: 160px;
+            padding: 24px;
+            color: var(--text-muted);
         }
 
+        .output-loading.visible {
+            display: flex;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .output-content {
+            display: none;
+            padding: 4px 0;
+        }
+
+        .output-content.visible {
+            display: block;
+        }
+
+        .result-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-banner.success {
+            background: var(--success-soft);
+            color: var(--success);
+        }
+
+        .result-banner.info {
+            background: var(--primary-soft);
+            color: #0277bd;
+        }
+
+        .result-banner.error {
+            background: var(--danger-soft);
+            color: var(--danger);
+        }
+
+        .result-banner-icon {
+            flex-shrink: 0;
+            width: 22px;
+            height: 22px;
+        }
+
+        .result-groups {
+            max-height: 360px;
+            overflow-y: auto;
+        }
+
+        .result-group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 10px 16px 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            background: var(--surface-muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-group-header .result-group-count {
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .result-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-item-icon {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.85rem;
+        }
+
+        .result-item.added .result-item-icon {
+            background: var(--primary-soft);
+            color: #0277bd;
+        }
+
+        .result-item.in-stock .result-item-icon {
+            background: var(--success-soft);
+            color: var(--success);
+        }
+
+        .result-item.missing .result-item-icon {
+            background: var(--warning-soft);
+            color: var(--warning);
+        }
+
+        .result-item-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .result-item-text strong {
+            display: block;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .result-item-text span {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .result-summary {
+            padding: 10px 16px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+        }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Mealie2Grocy</h1>
-    {% if ingress_username() %}
-    <div id="username-display">
-        {{ _("Logged in as") }}: {{ ingress_username() }}
+<div class="app">
+    <header class="header">
+        <h1>Mealie2Grocy</h1>
+        <p>{{ _("Sync your Mealie shopping list with Grocy") }}</p>
+        {% if ingress_username() %}
+        <div class="user-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </svg>
+            {{ _("Logged in as") }} {{ ingress_username() }}
+        </div>
+        {% endif %}
+    </header>
+
+    <div class="card">
+        <div class="card-section">
+            <div id="connection" class="connection checking">
+                <span class="connection-dot" aria-hidden="true"></span>
+                <span id="status" class="connection-label">{{ _("Testing connection...") }}</span>
+            </div>
+        </div>
+
+        <div class="card-section">
+            <div class="actions">
+                <button id="syncButton" class="btn btn-primary" onclick="sync_shoppinglist()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.65L3 21"/>
+                        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.65L21 3"/>
+                    </svg>
+                    {{ _("Synchronize shoppinglist") }}
+                </button>
+                <div class="actions-row">
+                    <button id="compareButton" class="btn btn-secondary" onclick="compare_m2g_databases()">
+                        {{ _("Compare products") }}
+                    </button>
+                    <button id="clearShoppinglistButton" class="btn btn-secondary" onclick="clear_shoppinglist()">
+                        {{ _("Clear mealie shoppinglist") }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-section">
+            <div class="output-header">
+                <h2>{{ _("Results") }}</h2>
+                <span class="hint" id="output-hint"></span>
+            </div>
+            <div class="output-panel" id="output-panel">
+                <div id="output-empty" class="output-empty">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                        <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+                        <rect x="9" y="3" width="6" height="4" rx="1"/>
+                        <path d="M9 12h6M9 16h4"/>
+                    </svg>
+                    <p>{{ _("Run an action above to see what changed in Mealie and Grocy.") }}</p>
+                </div>
+                <div id="output-loading" class="output-loading">
+                    <div class="spinner" aria-hidden="true"></div>
+                    <span id="loading-label">{{ _("Working...") }}</span>
+                </div>
+                <div id="output-content" class="output-content"></div>
+            </div>
+        </div>
     </div>
-    {% endif %}
-    <div id="status">{{ _("Testing connection...") }}</div>
-    <!--    <input type="text" id="api_key" placeholder="Enter API Key">-->
-    <button id="syncButton" onclick="sync_shoppinglist()">{{ _("Synchronize shoppinglist") }}</button>
-    <button id="compareButton" onclick="compare_m2g_databases()" style="background-color: #999">
-        {{ _("Compare products") }}
-    </button>
-    <button id="clearShoppinglistButton" onclick="clear_shoppinglist()" style="background-color: #999">
-        {{ _("Clear mealie shoppinglist") }}
-    </button>
-    <div id="response"
-         style="background-color: #f0f0f0; border: 1px solid #ccc; padding: 10px; margin-top: 20px; border-radius: 4px; font-family: monospace; white-space: pre-line; overflow-x: auto; text-align: left;"></div>
 </div>
+
 <script>
+    const MARKERS = {
+        added: {{ _('is added to the shopping list.') | tojson }},
+        inStock: {{ _('is in stock or already on the list') | tojson }},
+        missingIn: {{ _('missing in') | tojson }},
+        upToDate: {{ _('Shopping list is up to date.') | tojson }},
+        identical: {{ _('Product databases are identical.') | tojson }},
+    };
+
+    const LABELS = {
+        added: {{ _('Added to Grocy shopping list') | tojson }},
+        inStock: {{ _('Already covered') | tojson }},
+        missingMealie: {{ _('Missing in Mealie') | tojson }},
+        missingGrocy: {{ _('Missing in Grocy') | tojson }},
+        working: {{ _('Working...') | tojson }},
+        synchronizing: {{ _('Synchronizing...') | tojson }},
+        comparing: {{ _('Comparing...') | tojson }},
+        clearing: {{ _('Clearing...') | tojson }},
+        connected: {{ _('Connected to Mealie and Grocy') | tojson }},
+        disconnected: {{ _('Could not establish connection') | tojson }},
+        testing: {{ _('Testing connection...') | tojson }},
+        items: {{ _('items') | tojson }},
+        error: {{ _('Something went wrong') | tojson }},
+    };
+
+    function setConnectionState(state, text) {
+        const el = document.getElementById('connection');
+        el.className = 'connection ' + state;
+        document.getElementById('status').textContent = text;
+    }
+
     function checkHealth() {
+        setConnectionState('checking', LABELS.testing);
         fetch('{{ ingress_url_for("health_check") }}')
             .then(response => response.json())
             .then(data => {
-                document.getElementById('status').textContent = data.status === 'alive' ? "{{ _('Connected to Mealie and Grocy.') }}" : "{{ _('Could not establish connection.') }}";
-                document.getElementById('status').style.color = data.status === 'alive' ? 'green' : 'red';
+                if (data.status === 'alive') {
+                    setConnectionState('connected', LABELS.connected);
+                } else {
+                    setConnectionState('disconnected', LABELS.disconnected);
+                }
+            })
+            .catch(() => {
+                setConnectionState('disconnected', LABELS.disconnected);
+            });
+    }
+
+    function showLoading(label) {
+        document.getElementById('output-empty').classList.add('hidden');
+        document.getElementById('output-content').classList.remove('visible');
+        document.getElementById('output-loading').classList.add('visible');
+        document.getElementById('loading-label').textContent = label;
+        document.getElementById('output-hint').textContent = '';
+    }
+
+    function hideLoading() {
+        document.getElementById('output-loading').classList.remove('visible');
+    }
+
+    function parseResultLine(line) {
+        const trimmed = line.trim();
+        if (!trimmed) return null;
+
+        if (trimmed.includes(MARKERS.added)) {
+            const name = trimmed.replace(MARKERS.added, '').trim();
+            return { type: 'added', name, detail: LABELS.added };
+        }
+        if (trimmed.includes(MARKERS.inStock)) {
+            const name = trimmed.split(MARKERS.inStock)[0].trim();
+            const paren = trimmed.match(/\(([^)]+)\)/);
+            return { type: 'in-stock', name, detail: paren ? paren[1] : LABELS.inStock };
+        }
+        if (trimmed.includes(MARKERS.missingIn)) {
+            const parts = trimmed.split(MARKERS.missingIn);
+            const name = parts[0].trim();
+            const target = parts[1] ? parts[1].replace(/\.$/, '').trim() : '';
+            const type = target.toLowerCase().includes('mealie') ? 'missing-mealie' : 'missing-grocy';
+            return {
+                type: 'missing',
+                name,
+                detail: type === 'missing-mealie' ? LABELS.missingMealie : LABELS.missingGrocy,
+            };
+        }
+        if (trimmed === MARKERS.upToDate || trimmed === MARKERS.identical) {
+            return { type: 'banner-only', text: trimmed };
+        }
+        return { type: 'plain', text: trimmed };
+    }
+
+    function itemIcon(type) {
+        if (type === 'added') return '🛒';
+        if (type === 'in-stock') return '✓';
+        if (type === 'missing') return '!';
+        return '•';
+    }
+
+    const GROUP_ORDER = ['added', 'in-stock', 'missing-mealie', 'missing-grocy', 'plain'];
+
+    function getGroupKey(item) {
+        if (item.type === 'plain') return 'plain';
+        if (item.type === 'missing') {
+            return item.detail === LABELS.missingMealie ? 'missing-mealie' : 'missing-grocy';
+        }
+        return item.type;
+    }
+
+    function groupTitle(key) {
+        const titles = {
+            added: LABELS.added,
+            'in-stock': LABELS.inStock,
+            'missing-mealie': LABELS.missingMealie,
+            'missing-grocy': LABELS.missingGrocy,
+        };
+        return titles[key] || null;
+    }
+
+    function itemSortName(item) {
+        return (item.name || item.text || '').toLowerCase();
+    }
+
+    function buildGroupedItems(items) {
+        const sorted = [...items].sort((a, b) => {
+            const orderA = GROUP_ORDER.indexOf(getGroupKey(a));
+            const orderB = GROUP_ORDER.indexOf(getGroupKey(b));
+            const rankA = orderA === -1 ? GROUP_ORDER.length : orderA;
+            const rankB = orderB === -1 ? GROUP_ORDER.length : orderB;
+            if (rankA !== rankB) return rankA - rankB;
+            return itemSortName(a).localeCompare(itemSortName(b));
+        });
+
+        const groups = [];
+        for (const item of sorted) {
+            const key = getGroupKey(item);
+            const last = groups[groups.length - 1];
+            if (last && last.key === key) {
+                last.items.push(item);
+            } else {
+                groups.push({ key, items: [item] });
+            }
+        }
+        return groups;
+    }
+
+    function createResultListItem(item) {
+        const li = document.createElement('li');
+        if (item.type === 'plain') {
+            li.className = 'result-item';
+            li.innerHTML = `<span class="result-item-text">${escapeHtml(item.text)}</span>`;
+        } else {
+            li.className = `result-item ${item.type === 'missing' ? 'missing' : item.type}`;
+            li.innerHTML = `
+                <span class="result-item-icon" aria-hidden="true">${itemIcon(item.type)}</span>
+                <span class="result-item-text">
+                    <strong>${escapeHtml(item.name)}</strong>
+                    <span>${escapeHtml(item.detail)}</span>
+                </span>`;
+        }
+        return li;
+    }
+
+    function renderOutput(message, result, isError) {
+        hideLoading();
+        document.getElementById('output-empty').classList.add('hidden');
+
+        const content = document.getElementById('output-content');
+        content.innerHTML = '';
+        content.classList.add('visible');
+
+        const bannerClass = isError ? 'error'
+            : (result && (result.includes(MARKERS.upToDate) || result === MARKERS.identical) ? 'success' : 'info');
+        const bannerIcon = isError
+            ? '<svg class="result-banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>'
+            : '<svg class="result-banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>';
+
+        const banner = document.createElement('div');
+        banner.className = `result-banner ${bannerClass}`;
+        banner.innerHTML = `${bannerIcon}<span>${escapeHtml(message)}</span>`;
+        content.appendChild(banner);
+
+        if (!result) {
+            document.getElementById('output-hint').textContent = '';
+            return;
+        }
+
+        const lines = result.split('\n').map(parseResultLine).filter(Boolean);
+        const listItems = lines.filter(l => l.type !== 'banner-only');
+
+        if (listItems.length > 0) {
+            const groupsEl = document.createElement('div');
+            groupsEl.className = 'result-groups';
+
+            buildGroupedItems(listItems).forEach(group => {
+                const title = groupTitle(group.key);
+                if (title) {
+                    const header = document.createElement('div');
+                    header.className = 'result-group-header';
+                    header.innerHTML = `
+                        <span>${escapeHtml(title)}</span>
+                        <span class="result-group-count">${group.items.length}</span>`;
+                    groupsEl.appendChild(header);
+                }
+
+                const ul = document.createElement('ul');
+                ul.className = 'result-list';
+                group.items.forEach(item => ul.appendChild(createResultListItem(item)));
+                groupsEl.appendChild(ul);
+            });
+
+            content.appendChild(groupsEl);
+
+            const summary = document.createElement('div');
+            summary.className = 'result-summary';
+            summary.textContent = `${listItems.length} ${LABELS.items}`;
+            content.appendChild(summary);
+            document.getElementById('output-hint').textContent = `${listItems.length} ${LABELS.items}`;
+        } else {
+            document.getElementById('output-hint').textContent = '';
+        }
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function setButtonLoading(button, loadingText) {
+        button.dataset.originalHtml = button.innerHTML;
+        button.disabled = true;
+        button.innerHTML = `<span class="spinner" style="width:16px;height:16px;border-width:2px" aria-hidden="true"></span> ${loadingText}`;
+    }
+
+    function resetButton(button) {
+        if (button.dataset.originalHtml) {
+            button.innerHTML = button.dataset.originalHtml;
+            button.disabled = false;
+        }
+    }
+
+    function callEndpoint(endpoint, loadingLabel) {
+        showLoading(loadingLabel);
+
+        return fetch(endpoint)
+            .then(response => response.json())
+            .then(data => {
+                if (data === null || data.message === null) {
+                    renderOutput(LABELS.error, null, true);
+                    throw new Error('Empty response');
+                }
+                const isError = data.success === false;
+                if (data.result === null || data.result === undefined) {
+                    renderOutput(data.message, null, isError);
+                    return data.message;
+                }
+                renderOutput(data.message, data.result, isError);
+                return data.result;
             })
             .catch(error => {
-                console.error('Error fetching health status:', error);
-                document.getElementById('status').textContent = "{{ _('Could not establish connection.') }}";
+                console.error('Error calling endpoint:', error);
+                renderOutput(LABELS.error, null, true);
+                throw error;
             });
     }
 
     function sync_shoppinglist() {
-        const button = document.getElementById("syncButton");
-        const originalText = button.innerHTML;
-
-        // Show loading animation
-        button.innerHTML = "🔄 {{ _('Synchronizing') }}...";
-        button.disabled = true; // Prevent multiple clicks
-
-        callEndpoint("{{ ingress_url_for('update_grocy_shoppinglist') }}").finally(() => {
-            // Reset button state
-            button.innerHTML = originalText;
-            button.disabled = false;
-        });
+        const button = document.getElementById('syncButton');
+        setButtonLoading(button, LABELS.synchronizing);
+        callEndpoint('{{ ingress_url_for("update_grocy_shoppinglist") }}', LABELS.synchronizing)
+            .finally(() => resetButton(button));
     }
 
     function compare_m2g_databases() {
-        const button = document.getElementById("compareButton");
-        const originalText = button.innerHTML;
-
-        // Show loading animation
-        button.innerHTML = "🔄 {{ _('Comparing') }}...";
-        button.disabled = true; // Prevent multiple clicks
-
-        callEndpoint("{{ ingress_url_for('compare_m2g_databases') }}").finally(() => {
-            // Reset button state
-            button.innerHTML = originalText;
-            button.disabled = false;
-        });
+        const button = document.getElementById('compareButton');
+        setButtonLoading(button, LABELS.comparing);
+        callEndpoint('{{ ingress_url_for("compare_m2g_databases") }}', LABELS.comparing)
+            .finally(() => resetButton(button));
     }
 
     function clear_shoppinglist() {
-        const button = document.getElementById("clearShoppinglistButton");
-        const originalText = button.innerHTML;
-
-        // Show loading animation
-        button.innerHTML = "🔄 {{ _('Clearing') }}...";
-        button.disabled = true; // Prevent multiple clicks
-
-        callEndpoint("{{ ingress_url_for('clear_mealie_shoppinglist_endpoint') }}").finally(() => {
-            // Reset button state
-            button.innerHTML = originalText;
-            button.disabled = false;
-        });
+        const button = document.getElementById('clearShoppinglistButton');
+        setButtonLoading(button, LABELS.clearing);
+        callEndpoint('{{ ingress_url_for("clear_mealie_shoppinglist_endpoint") }}', LABELS.clearing)
+            .finally(() => resetButton(button));
     }
 
-    function callEndpoint(endpoint) {
-        document.getElementById('response').textContent = '...';
-
-        return new Promise((resolve, reject) => {
-            // const apiKey = "Bearer " + document.getElementById('api_key').value;
-
-            fetch(`${endpoint}`, {
-                // headers: {
-                //     'Authorization': apiKey
-                // }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    const responseDiv = document.getElementById('response');
-                    if (data === null || data.message === null) {
-                        responseDiv.textContent = `Error @ ${endpoint}.`;
-                        reject(`Error @ ${endpoint}.`);
-                    } else if (data.result === null || data.result === undefined) {
-                        responseDiv.textContent = `${data.message}`;
-                        resolve(data.message);
-                    } else {
-                        responseDiv.textContent = `${data.message}:\n\n${data.result}`;
-                        resolve(data.result);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error calling endpoint:', error);
-                    reject(error);
-                });
-        });
-    }
-
-
-    // Check health status on page load
     document.addEventListener('DOMContentLoaded', checkHealth);
 </script>
 </body>

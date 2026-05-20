@@ -1,3 +1,7 @@
+## v0.9.10 (2026-05-20)
+- Upgrade User Interface
+- Group products by status for improved visibility
+
 ## v0.9.9 (2025-07-03)
 - Fix: Notes on shoppinglist are treated like a product causing crash
 - Add products that only exist in Mealie as Grocy shoppinglist note

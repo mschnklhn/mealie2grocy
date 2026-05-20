@@ -109,3 +109,63 @@ msgstr "Comparing"
 msgid "Clearing"
 msgstr "Comparing"
 
+#: templates/index.html
+msgid "Sync your Mealie shopping list with Grocy"
+msgstr "Sync your Mealie shopping list with Grocy"
+
+#: templates/index.html
+msgid "Results"
+msgstr "Results"
+
+#: templates/index.html
+msgid "Run an action above to see what changed in Mealie and Grocy."
+msgstr "Run an action above to see what changed in Mealie and Grocy."
+
+#: templates/index.html
+msgid "Working..."
+msgstr "Working..."
+
+#: templates/index.html
+msgid "Added to Grocy shopping list"
+msgstr "Added to Grocy shopping list"
+
+#: templates/index.html
+msgid "Already covered"
+msgstr "Already covered"
+
+#: templates/index.html
+msgid "Missing in Mealie"
+msgstr "Missing in Mealie"
+
+#: templates/index.html
+msgid "Missing in Grocy"
+msgstr "Missing in Grocy"
+
+#: templates/index.html
+msgid "Synchronizing..."
+msgstr "Synchronizing..."
+
+#: templates/index.html
+msgid "Comparing..."
+msgstr "Comparing..."
+
+#: templates/index.html
+msgid "Clearing..."
+msgstr "Clearing..."
+
+#: templates/index.html
+msgid "Connected to Mealie and Grocy"
+msgstr "Connected to Mealie and Grocy"
+
+#: templates/index.html
+msgid "Could not establish connection"
+msgstr "Could not establish connection"
+
+#: templates/index.html
+msgid "items"
+msgstr "items"
+
+#: templates/index.html
+msgid "Something went wrong"
+msgstr "Something went wrong"
+
