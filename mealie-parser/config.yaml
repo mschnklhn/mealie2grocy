@@ -1,6 +1,6 @@
 name: Mealie Parser
 description: Standardize Mealie recipes via OpenAI (tags, categories, steps and ingredient links).
-version: "0.1.4"
+version: "0.1.5"
 slug: mealie_parser
 init: false
 url: https://github.com/mschnklhn/mealie-parser
