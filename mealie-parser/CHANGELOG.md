@@ -1,6 +1,3 @@
-## v0.1.5 (2026-06-20)
-- Filter for "no category" recipes by default
-
 ## v0.1.2 (2026-05-20)
 - Add option to disable SSL verification for Mealie connection
 
