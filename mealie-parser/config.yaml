@@ -1,0 +1,24 @@
+name: Mealie Parser
+description: Standardize Mealie recipes via OpenAI (tags, categories, steps and ingredient links).
+version: "0.1.0"
+slug: mealie_parser
+init: false
+url: https://github.com/mschnklhn/mealie-parser
+image: ghcr.io/mschnklhn/mealie-parser-{arch}
+panel_icon: mdi:chef-hat
+panel_admin: false
+arch:
+  - amd64
+  - aarch64
+startup: application
+boot: auto
+homeassistant_api: false
+ingress: true
+ingress_port: 8000
+ports:
+  "8000/tcp": null
+ports_description:
+  "8000/tcp": "Optional direct access (default: ingress only)"
+map: []
+options: {}
+schema: {}
