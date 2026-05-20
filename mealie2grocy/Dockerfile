@@ -1,5 +1,4 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+FROM ghcr.io/home-assistant/base:latest
 
 # Install requirements for add-on
 RUN apk add --update --no-cache python3 py3-pip
