@@ -131,10 +131,6 @@ msgid "min"
 msgstr "Mindest"
 
 #: templates/index.html
-msgid "list"
-msgstr "Liste"
-
-#: templates/index.html
 msgid "Added to Grocy shopping list"
 msgstr "Zur Grocy-Einkaufsliste hinzugefügt"
 

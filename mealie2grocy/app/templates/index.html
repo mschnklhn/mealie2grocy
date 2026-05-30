@@ -487,7 +487,6 @@
         needAny: {{ _('need any') | tojson }},
         stock: {{ _('stock') | tojson }},
         min: {{ _('min') | tojson }},
-        list: {{ _('list') | tojson }},
     };
 
     const LABELS = {
@@ -541,7 +540,11 @@
     }
 
     function formatSyncAmount(value) {
-        return Number(value).toFixed(2);
+        const rounded = Math.round(Number(value) * 100) / 100;
+        if (Number.isInteger(rounded)) {
+            return String(rounded);
+        }
+        return rounded.toFixed(2).replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '');
     }
 
     function formatSyncAmountWithUnit(value, unit) {
@@ -562,7 +565,6 @@
         if (item.kind !== 'note') {
             parts.push(`${SYNC_LABELS.stock} ${formatSyncAmountWithUnit(item.stock, unit)}`.trim());
             parts.push(`${SYNC_LABELS.min} ${formatSyncAmountWithUnit(item.min, unit)}`.trim());
-            parts.push(`${SYNC_LABELS.list} ${formatSyncAmountWithUnit(item.list, unit)}`.trim());
         }
 
         if (item.kind === 'added' || item.kind === 'note') {
