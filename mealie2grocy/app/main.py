@@ -105,7 +105,7 @@ def update_grocy_shoppinglist_from_mealie():
             # Any amount is sufficient
             amount_needed = round(max(1 - amount_already_on_shoppinglist, 0), 2)
 
-        if amount_needed > 0.05:
+        if amount_needed > 0.05 or (amount_needed > 0 and ingredient.amount == 0):
             logging.info(f"Adding {amount_needed} {ingredient.name} to shopping list (required: {ingredient.amount}, stock: {stock_item.stock}, min stock: {stock_item.min_stock}, already on shopping list: {amount_already_on_shoppinglist})")
             result += f"{ingredient.name} {_("is added to the shopping list.")}\n"
 
