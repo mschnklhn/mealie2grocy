@@ -477,11 +477,17 @@
 
 <script>
     const MARKERS = {
-        added: {{ _('is added to the shopping list.') | tojson }},
-        inStock: {{ _('is in stock or already on the list') | tojson }},
         missingIn: {{ _('missing in') | tojson }},
         upToDate: {{ _('Shopping list is up to date.') | tojson }},
         identical: {{ _('Product databases are identical.') | tojson }},
+    };
+
+    const SYNC_LABELS = {
+        need: {{ _('need') | tojson }},
+        needAny: {{ _('need any') | tojson }},
+        stock: {{ _('stock') | tojson }},
+        min: {{ _('min') | tojson }},
+        list: {{ _('list') | tojson }},
     };
 
     const LABELS = {
@@ -534,19 +540,50 @@
         document.getElementById('output-loading').classList.remove('visible');
     }
 
+    function formatSyncAmount(value) {
+        return Number(value).toFixed(2);
+    }
+
+    function formatSyncAmountWithUnit(value, unit) {
+        const amount = formatSyncAmount(value);
+        return unit ? `${amount} ${unit}` : amount;
+    }
+
+    function formatSyncDetail(item) {
+        const unit = item.unit || '';
+        const parts = [];
+
+        if (item.need != null && item.need > 0) {
+            parts.push(`${SYNC_LABELS.need} ${formatSyncAmountWithUnit(item.need, unit)}`.trim());
+        } else {
+            parts.push(SYNC_LABELS.needAny);
+        }
+
+        if (item.kind !== 'note') {
+            parts.push(`${SYNC_LABELS.stock} ${formatSyncAmountWithUnit(item.stock, unit)}`.trim());
+            parts.push(`${SYNC_LABELS.min} ${formatSyncAmountWithUnit(item.min, unit)}`.trim());
+            parts.push(`${SYNC_LABELS.list} ${formatSyncAmountWithUnit(item.list, unit)}`.trim());
+        }
+
+        if (item.kind === 'added' || item.kind === 'note') {
+            parts.push(`+${formatSyncAmountWithUnit(item.added, unit)}`.trim());
+        }
+
+        return parts.join(' · ');
+    }
+
+    function syncItemToResultItem(item) {
+        return {
+            type: item.kind === 'covered' ? 'in-stock' : 'added',
+            name: item.name,
+            detail: formatSyncDetail(item),
+        };
+    }
+
     function parseResultLine(line) {
         const trimmed = line.trim();
         if (!trimmed) return null;
 
-        if (trimmed.includes(MARKERS.added)) {
-            const name = trimmed.replace(MARKERS.added, '').trim();
-            return { type: 'added', name, detail: LABELS.added };
-        }
-        if (trimmed.includes(MARKERS.inStock)) {
-            const name = trimmed.split(MARKERS.inStock)[0].trim();
-            const paren = trimmed.match(/\(([^)]+)\)/);
-            return { type: 'in-stock', name, detail: paren ? paren[1] : LABELS.inStock };
-        }
         if (trimmed.includes(MARKERS.missingIn)) {
             const parts = trimmed.split(MARKERS.missingIn);
             const name = parts[0].trim();
@@ -635,7 +672,7 @@
         return li;
     }
 
-    function renderOutput(message, result, isError) {
+    function renderOutput(message, result, isError, syncItems) {
         hideLoading();
         document.getElementById('output-empty').classList.add('hidden');
 
@@ -643,8 +680,11 @@
         content.innerHTML = '';
         content.classList.add('visible');
 
+        const hasSyncItems = Array.isArray(syncItems) && syncItems.length > 0;
         const bannerClass = isError ? 'error'
-            : (result && (result.includes(MARKERS.upToDate) || result === MARKERS.identical) ? 'success' : 'info');
+            : ((!hasSyncItems && result && (result.includes(MARKERS.upToDate) || result === MARKERS.identical))
+                ? 'success'
+                : 'info');
         const bannerIcon = isError
             ? '<svg class="result-banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>'
             : '<svg class="result-banner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>';
@@ -654,13 +694,14 @@
         banner.innerHTML = `${bannerIcon}<span>${escapeHtml(message)}</span>`;
         content.appendChild(banner);
 
-        if (!result) {
+        if (!result && !hasSyncItems) {
             document.getElementById('output-hint').textContent = '';
             return;
         }
 
-        const lines = result.split('\n').map(parseResultLine).filter(Boolean);
-        const listItems = lines.filter(l => l.type !== 'banner-only');
+        const listItems = hasSyncItems
+            ? syncItems.map(syncItemToResultItem)
+            : result.split('\n').map(parseResultLine).filter(Boolean).filter(l => l.type !== 'banner-only');
 
         if (listItems.length > 0) {
             const groupsEl = document.createElement('div');
@@ -726,10 +767,12 @@
                 }
                 const isError = data.success === false;
                 if (data.result === null || data.result === undefined) {
-                    renderOutput(data.message, null, isError);
-                    return data.message;
+                    if (!data.sync_items || data.sync_items.length === 0) {
+                        renderOutput(data.message, null, isError);
+                        return data.message;
+                    }
                 }
-                renderOutput(data.message, data.result, isError);
+                renderOutput(data.message, data.result, isError, data.sync_items);
                 return data.result;
             })
             .catch(error => {

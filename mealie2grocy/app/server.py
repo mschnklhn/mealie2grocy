@@ -52,9 +52,16 @@ def update_grocy_shoppinglist():
     # thread.start()
 
     lock_shoppinglist_update = True
-    result = update_grocy_shoppinglist_from_mealie()
+    sync_result = update_grocy_shoppinglist_from_mealie()
     lock_shoppinglist_update = False
-    return jsonify({"success": True, "message": _("Mealie shopping list transfered to Grocy"), "result": result})
+    response = {
+        "success": True,
+        "message": _("Mealie shopping list transfered to Grocy"),
+        "sync_items": sync_result["items"],
+    }
+    if sync_result["up_to_date"]:
+        response["result"] = _("Shopping list is up to date.")
+    return jsonify(response)
 
 
 @app.route('/compare-product-databases', methods=['GET'])

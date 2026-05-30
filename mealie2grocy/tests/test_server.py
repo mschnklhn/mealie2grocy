@@ -24,12 +24,25 @@ class FlaskAppTestCase(unittest.TestCase):
     @patch('server.update_grocy_shoppinglist_from_mealie')
     def test_update_grocy_shoppinglist(self, mock_update_shoppinglist, mock_check_auth):
         mock_check_auth.return_value = True
-        mock_update_shoppinglist.return_value = 'Sample Result'
+        mock_update_shoppinglist.return_value = {
+            "up_to_date": False,
+            "items": [{
+                "kind": "added",
+                "name": "Tomatoes",
+                "unit": "g",
+                "need": 500,
+                "stock": 200,
+                "min": 100,
+                "list": 50,
+                "added": 450,
+            }],
+        }
         response = self.app.get('/update-grocy-shoppinglist')
         self.assertEqual(response.status_code, 200)
         self.assertTrue(mock_update_shoppinglist.called)
         self.assertIn(b'"success":true', response.data)
-        self.assertIn(b'Sample Result', response.data)
+        self.assertIn(b'"sync_items"', response.data)
+        self.assertIn(b'Tomatoes', response.data)
 
     @patch('server.check_auth')
     @patch('server.compare_product_databases')

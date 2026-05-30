@@ -1,3 +1,6 @@
+## v0.9.12 (2026-05-30)
+- Improve result verbosity to include more data on added items
+
 ## v0.9.11 (2026-05-20)
 - Upgrade User Interface
 - Group products by status for improved visibility
