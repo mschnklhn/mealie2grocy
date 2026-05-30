@@ -18,14 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: main.py:100
-msgid "is added to the shopping list."
-msgstr "is added to the shopping list."
-
-#: main.py:109
-msgid "is in stock or already on the list"
-msgstr "is in stock or already on the list"
-
 #: main.py:114
 msgid "Shopping list is up to date."
 msgstr "Shopping list is up to date."
@@ -124,6 +116,26 @@ msgstr "Run an action above to see what changed in Mealie and Grocy."
 #: templates/index.html
 msgid "Working..."
 msgstr "Working..."
+
+#: templates/index.html
+msgid "need"
+msgstr "need"
+
+#: templates/index.html
+msgid "need any"
+msgstr "need any"
+
+#: templates/index.html
+msgid "stock"
+msgstr "stock"
+
+#: templates/index.html
+msgid "min"
+msgstr "min"
+
+#: templates/index.html
+msgid "list"
+msgstr "list"
 
 #: templates/index.html
 msgid "Added to Grocy shopping list"
