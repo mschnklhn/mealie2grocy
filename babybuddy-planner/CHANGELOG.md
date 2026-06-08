@@ -1,3 +1,8 @@
+# 0.2.0
+- Improve sleep patterns
+- Add embedded mode
+
+
 # 0.1.0
 
 - Initial release: sleep day view with Baby Buddy integration
