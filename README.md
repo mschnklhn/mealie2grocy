@@ -1,7 +1,8 @@
 # mschnklhn's Home Assistant Apps
 
 A Home Assistant App repository containing apps around
-[Mealie](https://mealie.io/) and [Grocy](https://grocy.info/).
+[Mealie](https://mealie.io/), [Grocy](https://grocy.info/), and
+[Baby Buddy](https://github.com/babybuddy/babybuddy).
 
 ## Add this repository to Home Assistant
 
@@ -32,3 +33,10 @@ Standardizes recipes from a Mealie instance using OpenAI:
 You get a preview before anything is saved and can adjust suggestions
 manually. The container image is pulled from
 `ghcr.io/mschnklhn/mealie-parser-{arch}`.
+
+### [Baby Buddy Planner](./babybuddy-planner)
+
+Shows a calendar day view (00:00–24:00) of your baby's sleep: actual
+entries from Baby Buddy plus projected wake/sleep phases based on
+configurable day and night intervals. The container image is pulled from
+`ghcr.io/mschnklhn/babybuddy-planner-{arch}`.
