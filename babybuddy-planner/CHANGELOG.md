@@ -1,7 +1,10 @@
+# 0.3.0
+- Add buttons to control timer
+- Show feeding times
+
 # 0.2.0
 - Improve sleep patterns
 - Add embedded mode
-
 
 # 0.1.0
 
