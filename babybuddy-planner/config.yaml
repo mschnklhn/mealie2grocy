@@ -1,6 +1,6 @@
 name: Baby Buddy Planner
 description: Schlaf-Tagesansicht mit Prognose basierend auf Baby Buddy (Wach-/Schlafphasen).
-version: "0.3.0"
+version: "0.3.1"
 slug: babybuddy_planner
 init: false
 url: https://github.com/mschnklhn/babybuddy-planner

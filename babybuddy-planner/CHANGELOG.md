@@ -1,3 +1,7 @@
+# 0.3.1
+- Add additional buttons to adjust timer
+- Adjust sleep durations
+
 # 0.3.0
 - Add buttons to control timer
 - Show feeding times
