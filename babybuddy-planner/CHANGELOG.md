@@ -1,3 +1,6 @@
+# 0.3.3
+- Adjust sleep durations
+
 # 0.3.1
 - Add additional buttons to adjust timer
 - Adjust sleep durations
